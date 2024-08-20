@@ -124,7 +124,11 @@ def maybe_modifiers(row):
 
 
 def span_modifier(row):
-    return row.scan(r'[{^]')
+    m = row.scan(r'\s*([{^])')
+    if m:
+        return m.strip()
+    else:
+        return None
 
 def modifiers(row, kind):
     result = []

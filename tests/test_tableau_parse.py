@@ -240,6 +240,18 @@ class TestTableauParse(unittest.TestCase):
             [ c("", { "span": "^"}), c("e") ],
         ])
 
+    def test_single_rowspan_with_space(self):
+        block = "\n".join([
+                    "| a | b |",
+                    "| ^ | e |",
+                ])
+
+        result = tableau.to_ast(block)
+        self.assertResult(result, [ 
+            [ c("a"), c("b") ],
+            [ c("", { "span": "^"}), c("e") ],
+        ])
+
     def test_single_colspan(self):
         block = "\n".join([
                     "| a | b |",
@@ -247,7 +259,19 @@ class TestTableauParse(unittest.TestCase):
                 ])
 
         result = tableau.to_ast(block)
-        self.assertResult(result, [ 
+        self.assertResult(result, [
+            [ c("a"), c("b") ],
+            [ c("d"), c("e", { "span": "{"})]
+        ])
+
+    def test_single_colspan_with_space(self):
+        block = "\n".join([
+                    "| a | b  |",
+                    "| d | {e |",
+                ])
+
+        result = tableau.to_ast(block)
+        self.assertResult(result, [
             [ c("a"), c("b") ],
             [ c("d"), c("e", { "span": "{"})]
         ])
